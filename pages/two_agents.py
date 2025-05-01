@@ -18,10 +18,10 @@ load_dotenv(override=True)
 # https://ai.google.dev/gemini-api/docs/pricing
 # URL configurations
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', None)
-OPEN_API_KEY = os.getenv('OPEN_API_KEY', None)
+GEMINI_API_KEY_2 = os.getenv('GEMINI_API_KEY_2', None)
 
 placeholderstr = "Please input your command"
-user_name = "Gild"
+user_name = "Zoey"
 user_image = "https://www.w3schools.com/howto/img_avatar.png"
 
 seed = 42
@@ -33,19 +33,19 @@ llm_config_gemini = LLMConfig(
 )
 
 llm_config_openai = LLMConfig(
-    api_type = "openai", 
-    model="gpt-4o-mini",                    # The specific model
-    api_key=OPEN_API_KEY,   # Authentication
+    api_type = "google", 
+    model="gemini-2.0-flash-lite",                    # The specific model
+    api_key=GEMINI_API_KEY_2,   # Authentication
 )
 
 with llm_config_gemini:
     student_agent = ConversableAgent(
         name="Student_Agent",
-        system_message="You are a student willing to learn.",
+        system_message="You are a student want to find an intern.",
     )
     teacher_agent = ConversableAgent(
         name="Teacher_Agent",
-        system_message="You are a math teacher.",
+        system_message="You are a job instructor, help the student to find his/her ability.",
     )
 
 user_proxy = UserProxyAgent(
@@ -81,7 +81,7 @@ def main():
     )
 
     # Show title and description.
-    st.title(f"💬 {user_name}'s Chatbot")
+    st.title(f"💬 {user_name}'s job recommandation")
 
     with st.sidebar:
         paging()

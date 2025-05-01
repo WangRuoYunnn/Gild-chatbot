@@ -1,3 +1,8 @@
+# pip install --upgrade autogen[google]
+# pip install google-generativeai
+# pip install google-cloud-aiplatform
+# streamlit run /workspaces/Gild-chatbot/streamlit_app.py
+
 import streamlit as st
 from openai import OpenAI
 import time
@@ -18,7 +23,7 @@ load_dotenv(override=True)
 # https://ai.google.dev/gemini-api/docs/pricing
 # URL configurations
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', None)
-OPEN_API_KEY = os.getenv('OPEN_API_KEY', None)
+GEMINI_API_KEY_2 = os.getenv('GEMINI_API_KEY_2', None)
 
 placeholderstr = "Please input your command"
 user_name = "Zoey"
@@ -26,24 +31,24 @@ user_image = "https://www.w3schools.com/howto/img_avatar.png"
 
 seed = 42
 
-llm_config_gemini = LLMConfig(
+llm_config_gemini_1 = LLMConfig(
     api_type = "google", 
     model="gemini-2.0-flash-lite",                    # The specific model
     api_key=GEMINI_API_KEY,   # Authentication
 )
 
 llm_config_openai = LLMConfig(
-    api_type = "openai", 
-    model="gpt-4o-mini",                    # The specific model
-    api_key=OPEN_API_KEY,   # Authentication
+    api_type = "google", 
+    model="gemini-2.0-flash-lite",                    # The specific model
+    api_key=GEMINI_API_KEY_2,   # Authentication
 )
 
 with llm_config_openai:
     assistant = AssistantAgent(
         name="assistant",
         system_message=(
-        "You are a helpful storyteller assistant. "
-        "Please give me a story. After your result, say 'ALL DONE'. "
+        "You are a helpful job recommendation assistant. "
+        "Please give the required skills or abilities given the job. After your result, say 'ALL DONE'. "
         "Do not say 'ALL DONE' in the same response."
         ),
         max_consecutive_auto_reply=2
@@ -121,7 +126,7 @@ def main():
                     st_c_chat.chat_message(msg["role"]).markdown((msg["content"]))
 
 
-    story_template = ("Give me a story started from '##PROMPT##'."
+    story_template = ("These are required skills/abilities: '##PROMPT##'."
                       f"And remeber to mention user's name {user_name} in the end."
                       f"Please express in {lang_setting}")
 
@@ -138,7 +143,7 @@ def main():
 
     def generate_response(prompt):
 
-        prompt_template = f"Give me a story started from '{prompt}'"
+        prompt_template = f"These are required skills/abilities: '{prompt}'"
         # prompt_template = story_template.replace('##PROMPT##',prompt)
         # prompt_template = classification_template.replace('##PROMPT##',prompt)
         result = user_proxy.initiate_chat(
