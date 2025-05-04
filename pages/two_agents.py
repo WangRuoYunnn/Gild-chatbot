@@ -4,6 +4,8 @@ import time
 import re
 from dotenv import load_dotenv
 import os
+import unicodedata
+import pandas as pd
 
 # Import ConversableAgent class
 import autogen
@@ -32,7 +34,7 @@ llm_config_gemini = LLMConfig(
     api_key=GEMINI_API_KEY,   # Authentication
 )
 
-llm_config_openai = LLMConfig(
+llm_config_gemini_2 = LLMConfig(
     api_type = "google", 
     model="gemini-2.0-flash-lite",                    # The specific model
     api_key=GEMINI_API_KEY_2,   # Authentication
@@ -41,11 +43,16 @@ llm_config_openai = LLMConfig(
 with llm_config_gemini:
     student_agent = ConversableAgent(
         name="Student_Agent",
-        system_message="You are a student want to find an intern.",
+        system_message="You are a student want to find an intern. You need to provide " \
+        "the job you're looking for and the skills you have for teacher to find suggested intern.",
     )
     teacher_agent = ConversableAgent(
         name="Teacher_Agent",
-        system_message="You are a job instructor, help the student to find his/her ability.",
+        system_message="You are a job instructor, help the student to find his/her skills." \
+        "Student will give you the job and skills she has," \
+        "analysize goodness of fit between student's background and the target job," \
+        "you can sak student her information to help your analysis." \
+        "then search the target job and give the answer in the df this csv.",
     )
 
 user_proxy = UserProxyAgent(
@@ -81,7 +88,7 @@ def main():
     )
 
     # Show title and description.
-    st.title(f"💬 {user_name}'s job recommandation")
+    st.title(f"💬 {user_name}'s Job recommandation")
 
     with st.sidebar:
         paging()
