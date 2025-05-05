@@ -88,7 +88,7 @@ def main():
     )
 
     # Show title and description.
-    st.title(f"💬 {user_name}'s Job recommandation")
+    st.title(f"💬 Two agents")
 
     with st.sidebar:
         paging()
