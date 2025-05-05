@@ -1,7 +1,7 @@
 # pages/job_cleaner.py
 # -*- coding: utf-8 -*-
 """
-🧹Text mining - 讀入職缺CSV，從職缺描述擷取出「工作內容」，匯出
+🧹Job Cleaner - 讀入職缺CSV，從職缺描述擷取出「工作內容」，匯出
 """
 import os
 import re
@@ -13,7 +13,7 @@ from autogen import AssistantAgent, LLMConfig
 from tqdm import tqdm
 
 # ----------------------------- 基本設定 --------------------------------------
-PAGE_TITLE = "🧹Text mining"
+PAGE_TITLE = "🧹Job Cleaner"
 st.set_page_config(page_title=PAGE_TITLE, layout="wide", page_icon="🧹")
 st.title(PAGE_TITLE)
 
